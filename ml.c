@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-#include <time.h>
 
 typedef float train_sample[3];
 train_sample TRAIN_DATA[] = {
@@ -13,7 +12,7 @@ train_sample TRAIN_DATA[] = {
 #define TRAIN_SIZE (sizeof(TRAIN_DATA) / sizeof(TRAIN_DATA[0]))
 
 #define APPROX 1
-#define NEW_SEED 0
+#define NEW_SEED 1
 
 float sigmoidf(float x) 
 {
@@ -45,6 +44,7 @@ float model_cost(float w1, float w2, float b)
 int main(void)
 {
 #if NEW_SEED
+    #include <time.h>
     srand((unsigned) time(NULL));
 #else
     srand(69420);

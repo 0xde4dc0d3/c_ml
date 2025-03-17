@@ -12,6 +12,9 @@ train_sample TRAIN_DATA[] = {
 };
 #define TRAIN_SIZE (sizeof(TRAIN_DATA) / sizeof(TRAIN_DATA[0]))
 
+#define APPROX 1
+#define NEW_SEED 0
+
 float sigmoidf(float x) 
 {
     return 1.f / (1.f + expf(-x));
@@ -41,7 +44,11 @@ float model_cost(float w1, float w2, float b)
 
 int main(void)
 {
+#if NEW_SEED
+    srand((unsigned) time(NULL));
+#else
     srand(69420);
+#endif
 
     float bias  = rand_float();
     float w1    = rand_float();
@@ -84,6 +91,9 @@ int main(void)
         float x2 = TRAIN_DATA[i][1];
         float expected_y = TRAIN_DATA[i][2];
         float calculated_y = sigmoidf(w1 * x1 + w2 * x2 + bias);
+#if APPROX
+        calculated_y = (calculated_y < 0.5) ? 0.f : 1.f;
+#endif
         printf("cost: %f | %f & %f = %f | expected: %f\n", 
                model_cost(w1, w2, bias), x1, x2, calculated_y, expected_y);
     }
